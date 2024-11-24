@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Checker</title>
+
+    <!-- Add Google Font for styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+
+    <!-- Style for page layout and aesthetics -->
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Tangerine', serif;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #ffffff; /* Dark text for readability */
+            text-align: center; /* Center text */
+            padding: 20px;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        /* Heading styling */
+        h1 {
+            color: #cf13a0; /* Green title */
+            font-size: 50px; /* Larger title */
+            margin-top: 0;
+            padding-top: 30px;
+        }
+
+        .content {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #000000; 
+            border-radius: 10px; 
+            box-shadow: 0 10px 20px rgba(80, 80, 80, 0.1); 
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Result styling */
+        .result {
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Custom CSS for the glowing button */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f0f8ff; 
+        }
+
+        .glow-on-hover {
+            width: 220px;
+            height: 50px;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+        }
+
+        .glow-on-hover:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .glow-on-hover:active {
+            color: #000;
+        }
+
+        .glow-on-hover:active:after {
+            background: transparent;
+        }
+
+        .glow-on-hover:hover:before {
+            opacity: 1;
+        }
+
+        .glow-on-hover:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Header (Palindrome Checker Title) -->
+    <h1>Palindrome Checker</h1>
+
+    <!-- Content Box -->
+    <div class="content">
+        <!-- Instructions for the user -->
+        <p>Check if your word or phrase is a palindrome (reads the same forward and backward).</p>
+
+        <!-- Display Results of Palindrome Check -->
+        <div id="result" class="result"></div>
+
+        <!-- Button to start/continue checking palindromes -->
+        <button class="glow-on-hover" onclick="checkPalindrome()">Check Another Word</button>
+    </div>
+
+    <!-- Audio elements for sound feedback -->
+    <audio id="palindromeSound" src="ding-sound-effect_2.mp3"></audio>
+    <audio id="nonPalindromeSound" src="wrong-answer-buzzer.mp3"></audio>
+
+    <!-- JavaScript for checking palindrome -->
+    <script>
+        // Function to check if a string is a palindrome
+        function checkPalindrome() {
+            // Prompt user to enter a string
+            let userInput = prompt("Enter a string to check if it's a palindrome:");
+
+            // Check if the user pressed Cancel (no input)
+            if (userInput === null) {
+                return; // Exit function if no input
+            }
+
+            // Remove spaces and convert input to lowercase for comparison
+            let cleanedInput = userInput.replace(/\s+/g, '').toLowerCase();
+
+            // Reverse the cleaned input to compare with original
+            let reversedInput = cleanedInput.split('').reverse().join('');
+
+            // Determine if the cleaned input is a palindrome
+            if (cleanedInput === reversedInput) {
+                // Notify user if the string is a palindrome
+                document.getElementById('result').innerHTML = `<p><strong>${userInput}</strong> is a palindrome!</p>`;
+
+                // Play the palindrome sound
+                document.getElementById('palindromeSound').play();
+            } else {
+                // Notify user if the string is not a palindrome
+                document.getElementById('result').innerHTML = `<p><strong>${userInput}</strong> is not a palindrome.</p>`;
+
+                // Play the non-palindrome sound
+                document.getElementById('nonPalindromeSound').play();
+            }
+
+            // Ask user if they want to check for a different word
+            let continueChecking = confirm("Check a different word?");
+            if (continueChecking) {
+                checkPalindrome(); // If yes, call function again
+            }
+        }
+    </script>
+</body>
+</html>
